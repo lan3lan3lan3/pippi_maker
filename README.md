@@ -1,1 +1,1 @@
-por el momento logre cambiar el color de algunas partes del pippidon y añadir un png de un pelo, este png solo lo acomode para el sprite de "pippidonidle0" para los demas no, alta paja, habria que hacerlo desde el codigo, soy re pete con estas cosas asique es full hardprograming(? creo que asi se decia... bueno y por ultimo logre hacer  que renderize todo en una carpeta seleccionada desde un filebrowser
+anashei anashei anashei .t nig
