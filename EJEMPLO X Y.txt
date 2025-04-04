@@ -1,0 +1,21 @@
+{"position": (100, 200) }
+
+100 = horizontal
+200 = vertical
+
+100 pixeles desde la izquierda hacia la derecha 
+200 desde la parte superior hacia abajo
+
+275 
+             21
+254
+             21
+233
+              10
+223
+            10
+213
+              5
+208
+               7
+201

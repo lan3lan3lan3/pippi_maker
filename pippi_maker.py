@@ -11,12 +11,140 @@ class PippidonCustomizer:
         # Directorios
         self.base_path = "resources/base/"
         self.face_path = "resources/face/"
-        
-        # Cargar imágenes base
+        self.legs_path = "resources/legs/"
+        self.outfit_path = "resources/outfit/"
+        self.front_path = "resources/outfit/"
+        self.pet_path = "resources/pet/"
+        self.hat_path = "resources/hat/"
+        self.accessory_path = "resources/accessory/"
+
+        # Inicializar variables para las imágenes
         self.base_images = {}
-        self.modified_images = {}  # Para almacenar imágenes modificadas
-        self.load_base_images()
+        self.legs_images = {}
+        self.face_images = {}
+        self.hat_images = {}
+        self.outfit_images = {}
+        self.pet_images = {}
+        self.accessory_images = {}
+        self.modified_images = {}
+
+        # Inicializar variables para los accesorios seleccionados
+        self.selected_face = None
+        self.selected_hat = None
+        self.selected_outfit = None
+        self.selected_pet = None
+        self.selected_accessory = None
+
+        self.params_face = {
+            "pippidonidle0.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonidle1.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonidle2.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonidle3.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonidle4.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonidle5.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonkiai0.png": {"position": (37, 260), "size": (335, 335), "rotation": 16},
+            "pippidonkiai1.png": {"position": (56, 292), "size": (335, 335), "rotation": 7},
+            "pippidonkiai2.png": {"position": (37, 260), "size": (335, 335), "rotation": 16},
+            "pippidonkiai3.png": {"position": (56, 292), "size": (335, 335), "rotation": 7},
+            "pippidonfail0.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonfail1.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonclear0.png": {"position": (67, 275), "size": (335, 335), "rotation": 14},
+            "pippidonclear1.png": {"position": (67, 254), "size": (335, 335), "rotation": 14},
+            "pippidonclear2.png": {"position": (67, 233), "size": (335, 335), "rotation": 14},
+            "pippidonclear3.png": {"position": (67, 223), "size": (335, 335), "rotation": 14},
+            "pippidonclear4.png": {"position": (67, 213), "size": (335, 335), "rotation": 14},
+            "pippidonclear5.png": {"position": (67, 208), "size": (335, 335), "rotation": 14},
+            "pippidonclear6.png": {"position": (67, 201), "size": (335, 335), "rotation": 14},
+        }
         
+        self.params_hat = {
+            "pippidonidle0.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonidle1.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonidle2.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonidle3.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonidle4.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonidle5.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonkiai0.png": {"position": (37, 260), "size": (335, 335), "rotation": 16},
+            "pippidonkiai1.png": {"position": (56, 292), "size": (335, 335), "rotation": 7},
+            "pippidonkiai2.png": {"position": (37, 260), "size": (335, 335), "rotation": 16},
+            "pippidonkiai3.png": {"position": (56, 292), "size": (335, 335), "rotation": 7},
+            "pippidonfail0.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonfail1.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonclear0.png": {"position": (67, 275), "size": (335, 335), "rotation": 14},
+            "pippidonclear1.png": {"position": (67, 254), "size": (335, 335), "rotation": 14},
+            "pippidonclear2.png": {"position": (67, 233), "size": (335, 335), "rotation": 14},
+            "pippidonclear3.png": {"position": (67, 223), "size": (335, 335), "rotation": 14},
+            "pippidonclear4.png": {"position": (67, 213), "size": (335, 335), "rotation": 14},
+            "pippidonclear5.png": {"position": (67, 208), "size": (335, 335), "rotation": 14},
+            "pippidonclear6.png": {"position": (67, 201), "size": (335, 335), "rotation": 14},
+        }
+
+        self.params_outfit = {
+            "pippidonidle0.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonidle1.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonidle2.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonidle3.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonidle4.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonidle5.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonkiai0.png": {"position": (37, 260), "size": (335, 335), "rotation": 16},
+            "pippidonkiai1.png": {"position": (56, 292), "size": (335, 335), "rotation": 7},
+            "pippidonkiai2.png": {"position": (37, 260), "size": (335, 335), "rotation": 16},
+            "pippidonkiai3.png": {"position": (56, 292), "size": (335, 335), "rotation": 7},
+            "pippidonfail0.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
+            "pippidonfail1.png": {"position": (75, 338), "size": (335, 335), "rotation": -1},
+            "pippidonclear0.png": {"position": (67, 275), "size": (335, 335), "rotation": 14},
+            "pippidonclear1.png": {"position": (67, 254), "size": (335, 335), "rotation": 14},
+            "pippidonclear2.png": {"position": (67, 233), "size": (335, 335), "rotation": 14},
+            "pippidonclear3.png": {"position": (67, 223), "size": (335, 335), "rotation": 14},
+            "pippidonclear4.png": {"position": (67, 213), "size": (335, 335), "rotation": 14},
+            "pippidonclear5.png": {"position": (67, 208), "size": (335, 335), "rotation": 14},
+            "pippidonclear6.png": {"position": (67, 201), "size": (335, 335), "rotation": 14},
+        }
+
+        self.params_pet = {
+            "pippidonidle0.png": {"position": (0, 503), "size": (170, 170), "rotation": 0},
+            "pippidonidle1.png": {"position": (0, 496), "size": (170, 170), "rotation": 0},
+            "pippidonidle2.png": {"position": (0, 503), "size": (170, 170), "rotation": 0},
+            "pippidonidle3.png": {"position": (0, 496), "size": (170, 170), "rotation": 0},
+            "pippidonidle4.png": {"position": (0, 503), "size": (170, 170), "rotation": 0},
+            "pippidonidle5.png": {"position": (0, 496), "size": (170, 170), "rotation": 0},
+            "pippidonkiai0.png": {"position": (0, 503), "size": (170, 170), "rotation": 0},
+            "pippidonkiai1.png": {"position": (0, 496), "size": (170, 170), "rotation": 0},
+            "pippidonkiai2.png": {"position": (0, 503), "size": (170, 170), "rotation": 0},
+            "pippidonkiai3.png": {"position": (0, 496), "size": (170, 170), "rotation": 0},
+            "pippidonfail0.png": {"position": (0, 503), "size": (170, 170), "rotation": 0},
+            "pippidonfail1.png": {"position": (0, 496), "size": (170, 170), "rotation": 0},
+            "pippidonclear0.png": {"position": (0, 503), "size": (170, 170), "rotation": 0},
+            "pippidonclear1.png": {"position": (0, 496), "size": (170, 170), "rotation": 0},
+            "pippidonclear2.png": {"position": (0, 503), "size": (170, 170), "rotation": 0},
+            "pippidonclear3.png": {"position": (0, 496), "size": (170, 170), "rotation": 0},
+            "pippidonclear4.png": {"position": (0, 503), "size": (170, 170), "rotation": 0},
+            "pippidonclear5.png": {"position": (0, 496), "size": (170, 170), "rotation": 0},
+            "pippidonclear6.png": {"position": (0, 503), "size": (170, 170), "rotation": 0},
+        }
+
+        self.params_accessory = {
+            "pippidonidle0.png": {"position": (0, 0), "size": (700, 700), "rotation": 0},
+            "pippidonidle1.png": {"position": (-5, 2), "size": (700, 700), "rotation": -2},
+            "pippidonidle2.png": {"position": (0, 0), "size": (700, 700), "rotation": 0},
+            "pippidonidle3.png": {"position": (-5, 2), "size": (700, 700), "rotation": -2},
+            "pippidonidle4.png": {"position": (0, 0), "size": (700, 700), "rotation": 0},
+            "pippidonidle5.png": {"position": (-5, 2), "size": (700, 700), "rotation": -2},
+            "pippidonkiai0.png": {"position": (-135, -150), "size": (700, 700), "rotation": 16},
+            "pippidonkiai1.png": {"position": (-60, -88), "size": (700, 700), "rotation": 7},
+            "pippidonkiai2.png": {"position": (-135, -150), "size": (700, 700), "rotation": 16},
+            "pippidonkiai3.png": {"position": (-60, -88), "size": (700, 700), "rotation": 7},
+            "pippidonfail0.png": {"position": (0, 0), "size": (700, 700), "rotation": 0},
+            "pippidonfail1.png": {"position": (-5, 2), "size": (700, 700), "rotation": -2},
+            "pippidonclear0.png": {"position": (-90, -125), "size": (700, 700), "rotation": 13},
+            "pippidonclear1.png": {"position": (-90, -146), "size": (700, 700), "rotation": 13},
+            "pippidonclear2.png": {"position": (-90, -167), "size": (700, 700), "rotation": 13},
+            "pippidonclear3.png": {"position": (-90, -177), "size": (700, 700), "rotation": 13},
+            "pippidonclear4.png": {"position": (-90, -187), "size": (700, 700), "rotation": 13},
+            "pippidonclear5.png": {"position": (-90, -192), "size": (700, 700), "rotation": 13},
+            "pippidonclear6.png": {"position": (-90, -199), "size": (700, 700), "rotation": 13},
+        }
+
         # Marco izquierdo (Vista previa)
         self.preview_frame = tk.Frame(root)
         self.preview_frame.pack(side=tk.LEFT, padx=10, pady=10)
@@ -33,7 +161,7 @@ class PippidonCustomizer:
         
         # Crear pestañas para personalización
         self.tabs = {}
-        for category in ["Cuerpo", "Cara", "Borde", "Sombrero", "Disfraz Adelante", "Disfraz Atrás", "Accesorio"]:
+        for category in ["Cuerpo", "Cara", "Sombrero", "Disfraz", "Mascota", "Accesorio"]:
             frame = tk.Frame(self.notebook)
             self.notebook.add(frame, text=category)
             self.tabs[category] = frame
@@ -43,6 +171,7 @@ class PippidonCustomizer:
         self.face_color = "#fc4729"
         self.border_color = "#faf1d9"
         
+        # Crear botones de color para el cuerpo, cara y borde
         if "Cuerpo" in self.tabs:
             tk.Label(self.tabs["Cuerpo"], text="Color del Cuerpo:").pack()
             self.body_color_button = tk.Button(self.tabs["Cuerpo"], bg=self.body_color, width=10, command=self.change_body_color)
@@ -56,18 +185,32 @@ class PippidonCustomizer:
             self.border_color_button = tk.Button(self.tabs["Cuerpo"], bg=self.border_color, width=10, command=self.change_border_color)
             self.border_color_button.pack()
         
-        # Mostrar miniaturas en la pestaña "Cara"
-        self.face_images = {}
-        self.selected_face = None
+        # Mostrar miniaturas en las pestañas
         self.display_face_options()
-        
+        self.display_hat_options()
+        self.display_outfit_options()
+        self.display_pet_options()
+        self.display_accessory_options()
+
         # Botón de guardar
         self.save_button = tk.Button(self.options_frame, text="Guardar", command=self.save_customized_sprites)
         self.save_button.pack(pady=10)
+
+         # Cargar imágenes de los directorios
+        self.load_base_images()
+        self.load_legs_images()
+        self.load_face_images()
+        self.load_hat_images()
+        self.load_outfit_images()
+        self.load_pet_images()
+        self.load_accessory_images()
         
         # Imagen actual
         self.update_preview()
+
     
+    # Cargar imágenes de la carpeta base
+
     def apply_color_change(self, image, target_color, new_color):
         image = image.convert("RGBA")
         data = image.getdata()
@@ -77,7 +220,8 @@ class PippidonCustomizer:
         new_color = tuple(int(new_color[i:i+2], 16) for i in (1, 3, 5))
         
         for item in data:
-            if abs(item[0] - target_color[0]) < 30 and abs(item[1] - target_color[1]) < 30 and abs(item[2] - target_color[2]) < 30:
+            #   
+            if abs(item[0] - target_color[0]) < 60 and abs(item[1] - target_color[1]) < 60 and abs(item[2] - target_color[2]) < 60:
                 new_data.append(new_color + (item[3],))
             else:
                 new_data.append(item)
@@ -105,83 +249,421 @@ class PippidonCustomizer:
             self.border_color = color
             self.border_color_button.config(bg=color)
             self.update_preview()
-    
+
     def display_face_options(self):
+        # Crear un marco con desplazador
+        canvas = tk.Canvas(self.tabs["Cara"])
+        scrollbar = tk.Scrollbar(self.tabs["Cara"], orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas)
+    
+        # Configurar el desplazador
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+    
+        # Empaquetar el canvas y el desplazador
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+    
+        # Crear botones en una cuadrícula
+        max_columns = 5  # Número máximo de columnas por fila
+        row = 0
+        col = 0
+    
         for file in os.listdir(self.face_path):
             if file.endswith(".png"):
                 path = os.path.join(self.face_path, file)
-                img_original = Image.open(path)  # Guarda la versión original
-                img_preview = img_original.resize((50, 50))  # Solo redimensiona la vista previa
+                img_original = Image.open(path)
+                img_preview = img_original.resize((50, 50))
                 img_tk = ImageTk.PhotoImage(img_preview)
-
-                self.face_images[file] = img_original  # Guarda la versión original sin modificar
-                btn = tk.Button(self.tabs["Cara"], image=img_tk, command=lambda f=file: self.select_face(f))
-                btn.image = img_tk
-                btn.pack(side=tk.LEFT, padx=5)
     
+                self.face_images[file] = img_original
+                btn = tk.Button(scrollable_frame, image=img_tk, command=lambda f=file: self.select_face(f))
+                btn.image = img_tk
+                btn.grid(row=row, column=col, padx=5, pady=5)
+    
+                col += 1
+                if col >= max_columns:  # Si alcanzamos el número máximo de columnas, pasamos a la siguiente fila
+                    col = 0
+                    row += 1
+
+    def display_hat_options(self):
+        # Crear un marco con desplazador
+        canvas = tk.Canvas(self.tabs["Sombrero"])
+        scrollbar = tk.Scrollbar(self.tabs["Sombrero"], orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas)
+    
+        # Configurar el desplazador
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+    
+        # Empaquetar el canvas y el desplazador
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+    
+        # Crear botones en una cuadrícula
+        max_columns = 5  # Número máximo de columnas por fila
+        row = 0
+        col = 0
+    
+        for file in os.listdir(self.hat_path):
+            if file.endswith(".png"):
+                path = os.path.join(self.hat_path, file)
+                img_original = Image.open(path)
+                img_preview = img_original.resize((50, 50))
+                img_tk = ImageTk.PhotoImage(img_preview)
+    
+                self.hat_images[file] = img_original
+                btn = tk.Button(scrollable_frame, image=img_tk, command=lambda f=file: self.select_hat(f))
+                btn.image = img_tk
+                btn.grid(row=row, column=col, padx=5, pady=5)
+    
+                col += 1
+                if col >= max_columns:  # Si alcanzamos el número máximo de columnas, pasamos a la siguiente fila
+                    col = 0
+                    row += 1
+
+    def display_outfit_options(self):
+        # Crear un marco con desplazador
+        canvas = tk.Canvas(self.tabs["Disfraz"])
+        scrollbar = tk.Scrollbar(self.tabs["Disfraz"], orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas)
+    
+        # Configurar el desplazador
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+    
+        # Empaquetar el canvas y el desplazador
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+    
+        # Crear botones en una cuadrícula
+        max_columns = 5  # Número máximo de columnas por fila
+        row = 0
+        col = 0
+    
+        for file in os.listdir(self.outfit_path):
+            if file.endswith(".png"):
+                path = os.path.join(self.outfit_path, file)
+                img_original = Image.open(path)
+                img_preview = img_original.resize((50, 50))
+                img_tk = ImageTk.PhotoImage(img_preview)
+    
+                self.outfit_images[file] = img_original
+                btn = tk.Button(scrollable_frame, image=img_tk, command=lambda f=file: self.select_outfit(f))
+                btn.image = img_tk
+                btn.grid(row=row, column=col, padx=5, pady=5)
+    
+                col += 1
+                if col >= max_columns:  # Si alcanzamos el número máximo de columnas, pasamos a la siguiente fila
+                    col = 0
+                    row += 1
+
+    def display_pet_options(self):
+        # Crear un marco con desplazador
+        canvas = tk.Canvas(self.tabs["Mascota"])
+        scrollbar = tk.Scrollbar(self.tabs["Mascota"], orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas)
+    
+        # Configurar el desplazador
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+    
+        # Empaquetar el canvas y el desplazador
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+    
+        # Crear botones en una cuadrícula
+        max_columns = 5  # Número máximo de columnas por fila
+        row = 0
+        col = 0
+    
+        for file in os.listdir(self.pet_path):
+            if file.endswith(".png"):
+                path = os.path.join(self.pet_path, file)
+                img_original = Image.open(path)
+                img_preview = img_original.resize((50, 50))
+                img_tk = ImageTk.PhotoImage(img_preview)
+    
+                self.pet_images[file] = img_original
+                btn = tk.Button(scrollable_frame, image=img_tk, command=lambda f=file: self.select_pet(f))
+                btn.image = img_tk
+                btn.grid(row=row, column=col, padx=5, pady=5)
+    
+                col += 1
+                if col >= max_columns:  # Si alcanzamos el número máximo de columnas, pasamos a la siguiente fila
+                    col = 0
+                    row += 1
+
+    def display_accessory_options(self):
+        # Crear un marco con desplazador
+        canvas = tk.Canvas(self.tabs["Accesorio"])
+        scrollbar = tk.Scrollbar(self.tabs["Accesorio"], orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas)
+    
+        # Configurar el desplazador
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+    
+        # Empaquetar el canvas y el desplazador
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+    
+        # Crear botones en una cuadrícula
+        max_columns = 5  # Número máximo de columnas por fila
+        row = 0
+        col = 0
+    
+        for file in os.listdir(self.accessory_path):
+            if file.endswith(".png"):
+                path = os.path.join(self.accessory_path, file)
+                img_original = Image.open(path)
+                img_preview = img_original.resize((50, 50))
+                img_tk = ImageTk.PhotoImage(img_preview)
+    
+                self.accessory_images[file] = img_original
+                btn = tk.Button(scrollable_frame, image=img_tk, command=lambda f=file: self.select_accessory(f))
+                btn.image = img_tk
+                btn.grid(row=row, column=col, padx=5, pady=5)
+    
+                col += 1
+                if col >= max_columns:  # Si alcanzamos el número máximo de columnas, pasamos a la siguiente fila
+                    col = 0
+                    row += 1
+        
     def select_face(self, face_file):
         self.selected_face = self.face_images.get(face_file)
         self.update_preview()
-    
+
+    def select_hat(self, hat_file):
+        self.selected_hat = self.hat_images.get(hat_file)
+        self.update_preview()
+
+    def select_outfit(self, outfit_file):
+        self.selected_outfit = self.outfit_images.get(outfit_file)
+        self.update_preview()
+
+    def select_pet(self, pet_file):
+        self.selected_pet = self.pet_images.get(pet_file)
+        self.update_preview()
+        
+    def select_accessory(self, accessory_file):
+        self.selected_accessory = self.accessory_images.get(accessory_file)
+        self.update_preview()
+
     def load_base_images(self):
         for file in os.listdir(self.base_path):
             if file.endswith(".png"):
                 path = os.path.join(self.base_path, file)
                 self.base_images[file] = Image.open(path).convert("RGBA")
+
+    def load_legs_images(self):
+        for file in os.listdir(self.legs_path):
+            if file.endswith(".png"):
+                path = os.path.join(self.legs_path, file)
+                self.legs_images[file] = Image.open(path).convert("RGBA")
+
+    def load_face_images(self):
+        for file in os.listdir(self.face_path):
+            if file.endswith(".png"):
+                path = os.path.join(self.face_path, file)
+                self.face_images[file] = Image.open(path).convert("RGBA")
+            
+    def load_hat_images(self):
+        for file in os.listdir(self.hat_path):
+            if file.endswith(".png"):
+                path = os.path.join(self.hat_path, file)
+                self.hat_images[file] = Image.open(path).convert("RGBA")
+
+    def load_outfit_images(self):
+        for file in os.listdir(self.front_path):
+            if file.endswith(".png"):
+                path = os.path.join(self.front_path, file)
+                self.outfit_images[file] = Image.open(path).convert("RGBA")
+
+    def load_pet_images(self):
+        for file in os.listdir(self.pet_path):
+            if file.endswith(".png"):
+                path = os.path.join(self.pet_path, file)
+                self.pet_images[file] = Image.open(path).convert("RGBA")
+
+    def load_accessory_images(self):
+        for file in os.listdir(self.accessory_path):
+            if file.endswith(".png"):
+                path = os.path.join(self.accessory_path, file)
+                self.accessory_images[file] = Image.open(path).convert("RGBA")
     
     def update_preview(self):
-        # Parámetros predeterminados para los accesorios en el apartado "cara"
-        accessory_params = {
-            "pippidonidle0.png": {"position": (76, 333), "size": (335, 335), "rotation": 0},
-            "pippidonidle1.png": {"position": (12, 12), "size": (50, 50), "rotation": 5},
-            "pippidonidle2.png": {"position": (14, 14), "size": (50, 50), "rotation": -5},
-            "pippidonidle3.png": {"position": (10, 10), "size": (50, 50), "rotation": 0},
-            "pippidonidle4.png": {"position": (12, 12), "size": (50, 50), "rotation": 5},
-            "pippidonidle5.png": {"position": (14, 14), "size": (50, 50), "rotation": -5},
-            "pippidonkiai0.png": {"position": (20, 20), "size": (60, 60), "rotation": 0},
-            "pippidonkiai1.png": {"position": (22, 22), "size": (60, 60), "rotation": 10},
-            "pippidonkiai2.png": {"position": (24, 24), "size": (60, 60), "rotation": -10},
-            "pippidonkiai3.png": {"position": (20, 20), "size": (60, 60), "rotation": 0},
-            "pippidonfail0.png": {"position": (15, 15), "size": (55, 55), "rotation": 0},
-            "pippidonfail1.png": {"position": (17, 17), "size": (55, 55), "rotation": 5},
-            "pippidonclear0.png": {"position": (10, 10), "size": (50, 50), "rotation": 0},
-            "pippidonclear1.png": {"position": (12, 12), "size": (50, 50), "rotation": 5},
-            "pippidonclear2.png": {"position": (14, 14), "size": (50, 50), "rotation": -5},
-            "pippidonclear3.png": {"position": (10, 10), "size": (50, 50), "rotation": 0},
-            "pippidonclear4.png": {"position": (12, 12), "size": (50, 50), "rotation": 5},
-            "pippidonclear5.png": {"position": (14, 14), "size": (50, 50), "rotation": -5},
-            "pippidonclear6.png": {"position": (16, 16), "size": (50, 50), "rotation": 0},
-        }
-
-        for filename, img in self.base_images.items():
+        # Parámetros predeterminados para los accesorios
+        face_params = self.params_face
+        hat_params = self.params_hat
+        outfit_params = self.params_outfit
+        pet_params = self.params_pet
+        accessory_params = self.params_accessory
+    
+        # Trabajar solo con el sprite de previsualización
+        filename = "pippidonidle0.png"
+        if filename in self.base_images:
+            img = self.base_images[filename]
             modified_img = img.copy()
             modified_img = self.apply_color_change(modified_img, "#6ac1c1", self.body_color)
             modified_img = self.apply_color_change(modified_img, "#fc4729", self.face_color)
             modified_img = self.apply_color_change(modified_img, "#faf1d9", self.border_color)
-            
+    
+            # Aplicar "Cara"
             if self.selected_face:
-                # Obtener parámetros del accesorio
+                params = face_params.get(filename, {"position": (0, 0), "size": (50, 50), "rotation": 0})
+                position = params["position"]
+                size = params["size"]
+                rotation = params["rotation"]
+                accessory = self.selected_face.resize(size).rotate(rotation, expand=True)
+                modified_img.paste(accessory, position, accessory)
+    
+            # Aplicar "Sombrero"
+            if self.selected_hat:
+                params = hat_params.get(filename, {"position": (0, 0), "size": (50, 50), "rotation": 0})
+                position = params["position"]
+                size = params["size"]
+                rotation = params["rotation"]
+                accessory = self.selected_hat.resize(size).rotate(rotation, expand=True)
+                modified_img.paste(accessory, position, accessory)
+    
+            # Aplicar "Disfraz"
+            if self.selected_outfit:
+                params = outfit_params.get(filename, {"position": (0, 0), "size": (50, 50), "rotation": 0})
+                position = params["position"]
+                size = params["size"]
+                rotation = params["rotation"]
+                accessory = self.selected_outfit.resize(size).rotate(rotation, expand=True)
+                modified_img.paste(accessory, position, accessory)
+
+            # Aplicar "Accesorio"
+            if self.selected_accessory:
                 params = accessory_params.get(filename, {"position": (0, 0), "size": (50, 50), "rotation": 0})
                 position = params["position"]
                 size = params["size"]
                 rotation = params["rotation"]
-
-                # Modificar el accesorio según los parámetros
-                accessory = self.selected_face.resize(size).rotate(rotation, expand=True)
+                accessory = self.selected_accessory.resize(size).rotate(rotation, expand=True)
                 modified_img.paste(accessory, position, accessory)
 
-            self.modified_images[filename] = modified_img
-        
-        img_tk = ImageTk.PhotoImage(self.modified_images["pippidonidle0.png"])
-        self.canvas.create_image(450, 140, image=img_tk)
-        self.canvas.image = img_tk
+            # Agregar las piernas si están disponibles
+            if filename in self.legs_images:
+                legs_img = self.legs_images[filename]
+                modified_img.paste(legs_img, (0, 0), legs_img)  # Pegar en la posición original
+    
+            # Aplicar "Mascota" (renderizar después de las piernas)
+            if self.selected_pet:
+                params = pet_params.get(filename, {"position": (0, 0), "size": (50, 50), "rotation": 0})
+                position = params["position"]
+                size = params["size"]
+                rotation = params["rotation"]
+                accessory = self.selected_pet.resize(size).rotate(rotation, expand=True)
+                modified_img.paste(accessory, position, accessory)
+    
+            # Actualizar la previsualización
+            img_tk = ImageTk.PhotoImage(modified_img)
+            self.canvas.create_image(450, 140, image=img_tk)
+            self.canvas.image = img_tk
+        else:
+            # Manejar el caso en el que el archivo no esté en self.base_images
+            print(f"Advertencia: {filename} no se encuentra en las imágenes base.")
     
     def save_customized_sprites(self):
+        # Aplicar los cambios a todos los sprites antes de guardar
+        self.apply_changes_to_all_sprites()
+
         folder_selected = filedialog.askdirectory()
         if not folder_selected:
             return
         for filename, image in self.modified_images.items():
             image.save(os.path.join(folder_selected, filename))
+
+    def apply_changes_to_all_sprites(self):
+        # Parámetros predeterminados para los accesorios
+        face_params = self.params_face
+        hat_params = self.params_hat
+        outfit_params = self.params_outfit
+        pet_params = self.params_pet
+        accessory_params = self.params_accessory
+    
+        for filename, img in self.base_images.items():
+            modified_img = img.copy()
+            modified_img = self.apply_color_change(modified_img, "#6ac1c1", self.body_color)
+            modified_img = self.apply_color_change(modified_img, "#fc4729", self.face_color)
+            modified_img = self.apply_color_change(modified_img, "#faf1d9", self.border_color)
+    
+            # Aplicar "Cara"
+            if self.selected_face:
+                params = face_params.get(filename, {"position": (0, 0), "size": (50, 50), "rotation": 0})
+                position = params["position"]
+                size = params["size"]
+                rotation = params["rotation"]
+                accessory = self.selected_face.resize(size).rotate(rotation, expand=True)
+                modified_img.paste(accessory, position, accessory)
+    
+            # Aplicar "Sombrero"
+            if self.selected_hat:
+                params = hat_params.get(filename, {"position": (0, 0), "size": (50, 50), "rotation": 0})
+                position = params["position"]
+                size = params["size"]
+                rotation = params["rotation"]
+                accessory = self.selected_hat.resize(size).rotate(rotation, expand=True)
+                modified_img.paste(accessory, position, accessory)
+    
+            # Aplicar "Disfraz"
+            if self.selected_outfit:
+                params = outfit_params.get(filename, {"position": (0, 0), "size": (50, 50), "rotation": 0})
+                position = params["position"]
+                size = params["size"]
+                rotation = params["rotation"]
+                accessory = self.selected_outfit.resize(size).rotate(rotation, expand=True)
+                modified_img.paste(accessory, position, accessory)
+
+            # Aplicar "Accesorio"
+            if self.selected_accessory:
+                params = accessory_params.get(filename, {"position": (0, 0), "size": (50, 50), "rotation": 0})
+                position = params["position"]
+                size = params["size"]
+                rotation = params["rotation"]
+                accessory = self.selected_accessory.resize(size).rotate(rotation, expand=True)
+                modified_img.paste(accessory, position, accessory)
+
+             # Agregar las piernas si están disponibles (renderizar primero)
+            if filename in self.legs_images:
+                legs_img = self.legs_images[filename]
+                modified_img.paste(legs_img, (0, 0), legs_img)  # Pegar en la posición original
+
+            # Aplicar "Mascota" (renderizar después de las piernas)
+            if self.selected_pet:
+                params = pet_params.get(filename, {"position": (0, 0), "size": (50, 50), "rotation": 0})
+                position = params["position"]
+                size = params["size"]
+                rotation = params["rotation"]
+                accessory = self.selected_pet.resize(size).rotate(rotation, expand=True)
+                modified_img.paste(accessory, position, accessory)
+
+    
+            # Guardar la imagen modificada
+            self.modified_images[filename] = modified_img
 
 if __name__ == "__main__":
     root = tk.Tk()
